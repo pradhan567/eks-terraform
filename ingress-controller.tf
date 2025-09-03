@@ -41,10 +41,12 @@ resource "aws_iam_role_policy_attachment" "lb_controller_policy_attach" {
 # 4. Fetch EKS cluster details
 data "aws_eks_cluster" "this" {
   name = "jethalal"
+  depends_on = [ aws_eks_cluster.eks ]
 }
 
 data "aws_eks_cluster_auth" "this" {
   name = "jethalal"
+  depends_on = [ aws_eks_cluster.eks ]
 }
 
 # 5. Configure Kubernetes provider
