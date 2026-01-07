@@ -54,3 +54,8 @@ resource "aws_iam_role_policy_attachment" "eks_worker_ebs_csi_policy" {
   role       = aws_iam_role.eks_worker_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
+
+resource "aws_iam_role_policy_attachment" "eks_worker_efs_csi_policy" {
+  role       = aws_iam_role.eks_worker_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
+}

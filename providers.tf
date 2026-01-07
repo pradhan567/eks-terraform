@@ -6,11 +6,11 @@ terraform {
     }
   }
 
-  # backend "s3" {
-  #   bucket       = "terra-state-storage-bucket"
-  #   key          = "terraform/state"
-  #   region       = "ap-south-1"
-  # }
+  backend "s3" {
+    bucket       = "terra-state-storage-bucket-1"
+    key          = "terraform/state"
+    region       = "ap-south-1"
+  }
 }
 
 # Configure the AWS Provider

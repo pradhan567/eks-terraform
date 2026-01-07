@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-config
+  namespace: jenkins
+data:
+  casc.yaml: |
+    jenkins:
+      systemMessage: "Jenkins configured for Kubernetes"
+      numExecutors: 0  # Disable built-in executors; use agents
+      clouds:
+      - kubernetes:
+          name: "kubernetes"
+          serverUrl: "https://kubernetes.default.svc"
+          skipTlsVerify: true
+          namespace: "jenkins"
+          credentialsId: "kubernetes-service-account"
+          templates:
+          - name: "jenkins-agent"
+            label: "jenkins-agent"
+            nodeUsageMode: NORMAL
+            containers:
+            - name: "jnlp"
+              image: "jenkins/inbound-agent:latest"
+              alwaysPullImage: false
+              workingDir: "/home/jenkins/agent"
+              ttyEnabled: true
+              command: ""
+              args: ""
+              resourceRequestCpu: "500m"
+              resourceLimitCpu: "1000m"
+              resourceRequestMemory: "256Mi"
+              resourceLimitMemory: "512Mi"
+            volumes:
+            - hostPathVolume:
+                hostPath: "/var/run/docker.sock"
+                mountPath: "/var/run/docker.sock"
+            envVars:
+            - envVar:
+                key: "JENKINS_URL"
+                value: "http://jenkins-service.jenkins.svc.cluster.local:80"
+  plugins.txt: |
+    kubernetes:4000.v3f9a_1a_4a_1f8
+    configuration-as-code:1679.v884f627c8a_8e
